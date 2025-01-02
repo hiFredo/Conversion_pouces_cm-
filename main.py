@@ -1,8 +1,10 @@
 PC = "pouces vers cm"
 CP = "cm vers pouces"
-def demander_utilisateur():
-    reponse_int = 0  
-    while reponse_int==0 :
+
+POUCE_EN_CM = 2.54
+CM_EN_POUCE = 0.394
+def demander_utilisateur():  
+    while True :
         print() 
         reponse_str= input("Quelle conversion souhaite vous faire : \n1-pouces vers cm\n2-cm vers pouces \nVotre choix (1 ou 2 ) :")
         try : 
@@ -10,52 +12,36 @@ def demander_utilisateur():
             if reponse_int== 1 or reponse_int ==2 :
                 return reponse_int
             else:
-                reponse_int=0  
+                print( "Veuiller entre 1 ou 2")
         except:      
-            print("ERREUR : Veuiller choisir entre 1 ou 2 ")
-            reponse_int = 0
-    return reponse_int
+            print("ERREUR : Veuiller renter un nombre valide( 1 ou 2 )")
 
-def conversion_pouces_cm():
-    print(f"Vous voule convertir {PC} ")
-    reponse_int = 0 
-    while reponse_int == 0 :  
-        reponse_str= input("Renter la valeur a convertir :")
-        try : 
-            reponse_int= int(reponse_str)
-            #conversion 
-            resultats = reponse_int * 2.54
-            return resultats
-        
-        except : 
-            print("Erreur veuille rentre un nombre ")
-            reponse_int= 0 
-        return resultats 
+def demander_valeur(conversion_type):
+    print(f"Vous voulez convertir {conversion_type}")
+    while True:
+        valeur_str = input("Entrez la valeur à convertir : ")
+        try:
+            valeur_float = float(valeur_str)
+            return valeur_float
+        except ValueError:
+            print("ERREUR : Veuillez entrer un nombre valide.")
 
-def conversion_cm_pouces():
-    print(f"Vous voule convertir {CP} ")
-    reponse_int = 0 
-    while reponse_int == 0 :  
-        reponse_str= input("Renter la valeur a convertir :")
-        try : 
-            reponse_int= int(reponse_str)
-            #conversion 
-            resultats = reponse_int * 0.394
-            return resultats
-        
-        except : 
-            print("Erreur veuille rentre un nombre ")
-            reponse_int= 0 
-        return resultats 
 
+def conversion_pouces_cm(valeur):
+    return valeur * POUCE_EN_CM
+  
+def conversion_cm_pouces(valeur):
+    return valeur * CM_EN_POUCE
+   
+     
 
 
 choix = demander_utilisateur()
 if choix == 1 :
-    resultas = conversion_pouces_cm()    
-    print(f"La resultats du conversion de {PC} est : {resultas} cm  ")
+    valeur= demander_valeur(PC)
+    resultas = conversion_pouces_cm(valeur)    
+    print(f"La resultats du conversion de {valeur} pouces = {resultas} cm  ")
 elif choix == 2  :
-    resultas = conversion_cm_pouces()
-    print(f"La resultats du conversion de {PC} est : {resultas} pouces  ")
-else :
-    print("Errorrrrr")
+    valeur= demander_valeur(CP)
+    resultas = conversion_cm_pouces(valeur)
+    print(f"La resultats du conversion de {valeur} cm =  {resultas} pouces  ")
