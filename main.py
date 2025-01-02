@@ -1,47 +1,59 @@
-PC = "pouces vers cm"
-CP = "cm vers pouces"
 
-POUCE_EN_CM = 2.54
-CM_EN_POUCE = 0.394
-def demander_utilisateur():  
-    while True :
-        print() 
-        reponse_str= input("Quelle conversion souhaite vous faire : \n1-pouces vers cm\n2-cm vers pouces \nVotre choix (1 ou 2 ) :")
-        try : 
-            reponse_int = int(reponse_str)
-            if reponse_int== 1 or reponse_int ==2 :
-                return reponse_int
-            else:
-                print( "Veuiller entre 1 ou 2")
-        except:      
-            print("ERREUR : Veuiller renter un nombre valide( 1 ou 2 )")
+"""
+1 pouce = 2.54 cm
+1 cm = 0.394 pouces
 
-def demander_valeur(conversion_type):
-    print(f"Vous voulez convertir {conversion_type}")
-    while True:
-        valeur_str = input("Entrez la valeur à convertir : ")
-        try:
-            valeur_float = float(valeur_str)
-            return valeur_float
-        except ValueError:
-            print("ERREUR : Veuillez entrer un nombre valide.")
+Exemple :
+Un écran de 17 pouces de diagonale, correspond à 43,18 cm (=17*2.54)
+
+Voici comment votre programme doit se comporter :
+1 - Demander à l'utilisateur si il souhaite convertir de "pouces vers cm" ou "cm vers pouces"
+2 - Demander à l'utilisateur de rentrer la valeur à convertir (en reprécisant l'unité)
+3 - Afficher la valeur convertie (et l'unité : cm ou pouces)
+- fin du programme.
+"""
+
+"""
+effectuer_conversion : Cette fonction convertit les unités unit1 vers unit2
+
+Return :
+ True : L'utilisateur ne veut plus convertir (sortir du programme)
+ False : L'utilisateur a donné une valeur à convertir
+"""
+def demander_et_afficher_conversion(unit1, unit2, facteur):
+    valeur_str = input(f"Conversion {unit1} -> {unit2}. Donnez la valeur en {unit1} (ou 'q' pour quitter) : ")
+    if valeur_str == "q":
+        return True
+    try:
+        valeur_float = float(valeur_str)
+    except ValueError:
+        print("ERREUR : Vous devez rentrer une valeur numérique")
+        print("(utilisez le point et non la virgule pour les décimales)")
+        return demander_et_afficher_conversion(unit1, unit2, facteur)
+
+    valeur_convertie = round(valeur_float * facteur, 2)
+    print(f"Résultat de la conversion : {valeur_float} {unit1} = {valeur_convertie} {unit2}")
+    return False
 
 
-def conversion_pouces_cm(valeur):
-    return valeur * POUCE_EN_CM
-  
-def conversion_cm_pouces(valeur):
-    return valeur * CM_EN_POUCE
-   
-     
+while True:
+    # Menu : choix de la conversion
+    print("Ce programme vous permet d'effectuer des conversions d'unités")
+    print("1 - Pouces vers cm")
+    print("2 - cm vers pouces")
+    choix = input("Votre choix (1 ou 2): ")
+    if choix == "1" or choix == "2":
+        break
+    print("ERREUR : Vous devez choisir 1 ou 2")
 
+while True:
+    # Demander les valeurs à convertir à l'utilisateur
+    if choix == "1":
+        if demander_et_afficher_conversion("pouces", "cm", 2.54):
+            print()       
+            break
+    if choix == "2":
+        if demander_et_afficher_conversion("cm", "pouces", 0.394):
+            print() 
+            break
 
-choix = demander_utilisateur()
-if choix == 1 :
-    valeur= demander_valeur(PC)
-    resultas = conversion_pouces_cm(valeur)    
-    print(f"La resultats du conversion de {valeur} pouces = {resultas} cm  ")
-elif choix == 2  :
-    valeur= demander_valeur(CP)
-    resultas = conversion_cm_pouces(valeur)
-    print(f"La resultats du conversion de {valeur} cm =  {resultas} pouces  ")
